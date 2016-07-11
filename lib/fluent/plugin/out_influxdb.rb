@@ -87,15 +87,6 @@ DESC
                                                 time_precision: @time_precision,
                                                 use_ssl: @use_ssl,
                                                 verify_ssl: @verify_ssl
-
-    begin
-      existing_databases = @influxdb.list_databases.map { |x| x['name'] }
-      unless existing_databases.include? @dbname
-        raise Fluent::ConfigError, 'Database ' + @dbname + ' doesn\'t exist. Create it first, please. Existing databases: ' + existing_databases.join(',')
-      end
-    rescue InfluxDB::AuthenticationError, InfluxDB::Error
-      log.info "skip database presence check because '#{@user}' user doesn't have admin privilege. Check '#{@dbname}' exists on influxdb"
-    end
   end
 
   FORMATTED_RESULT_FOR_INVALID_RECORD = ''.freeze
